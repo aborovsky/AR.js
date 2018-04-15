@@ -81,9 +81,10 @@ ARjs.Session = function(parameters){
 	})
 	
 	// handle resize
-	window.addEventListener('resize', function(){
-		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
-	})	
+	this.onResize = function() {
+        arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
+    };
+	window.addEventListener('resize', this.onResize);
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arContext
@@ -114,4 +115,12 @@ ARjs.Session = function(parameters){
 
 ARjs.Session.prototype.onResize = function () {
 	this.arSource.onResize(this.arContext, this.parameters.renderer, this.parameters.camera)	
+};
+
+ARjs.Session.prototype.dispose = function () {
+    window.removeEventListener('resize', this.onResize);
+    this.arContext.arController.dispose();
+    this.parameters = null;
+    this.signals = null;
+    this.arSource = false;
 };

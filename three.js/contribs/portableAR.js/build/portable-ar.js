@@ -50215,7 +50215,7 @@ ARjs.Source.prototype.onResizeElement = function(){
 		var newWidth = sourceAspect * screenHeight
 		this.domElement.style.width = newWidth+'px'
 		this.domElement.style.marginLeft = -(newWidth-screenWidth)/2+'px'
-		
+
 		// init style.height/.marginTop to normal value
 		this.domElement.style.height = screenHeight+'px'
 		this.domElement.style.marginTop = '0px'
@@ -50229,6 +50229,7 @@ ARjs.Source.prototype.onResizeElement = function(){
 		this.domElement.style.width = screenWidth+'px'
 		this.domElement.style.marginLeft = '0px'
 	}
+    this.domElement.style.marginLeft!='0px' && console.error('boba', this.domElement.style.marginLeft)
 }
 /*
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
@@ -50239,24 +50240,11 @@ ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 }
 */
 
-ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
-
-	if (window.innerWidth > window.innerHeight)
-	{
-		//landscape
-		otherElement.style.width = this.domElement.style.width
-		otherElement.style.height = this.domElement.style.height
-		otherElement.style.marginLeft = this.domElement.style.marginLeft
-		otherElement.style.marginTop = this.domElement.style.marginTop
-	}
-	else {
-		//portrait
-		otherElement.style.height = this.domElement.style.height
-		otherElement.style.width = (parseInt(otherElement.style.height) * 4/3)+"px";
-		otherElement.style.marginLeft = ((window.innerWidth- parseInt(otherElement.style.width))/2)+"px";
-		otherElement.style.marginTop = 0;
-	}
-
+ARjs.Source.prototype.copyElementSizeTo = function (otherElement) {
+    otherElement.style.width = window.innerWidth; //this.domElement.style.width
+    otherElement.style.height = window.innerWidth;//this.domElement.style.height
+    //otherElement.style.marginLeft = this.domElement.style.marginLeft
+    otherElement.style.marginTop = this.domElement.style.marginTop
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -51191,9 +51179,10 @@ ARjs.Session = function(parameters){
 	})
 	
 	// handle resize
-	window.addEventListener('resize', function(){
-		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
-	})	
+	this.onResize = function() {
+        arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
+    };
+	window.addEventListener('resize', this.onResize);
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arContext
@@ -51225,7 +51214,14 @@ ARjs.Session = function(parameters){
 ARjs.Session.prototype.onResize = function () {
 	this.arSource.onResize(this.arContext, this.parameters.renderer, this.parameters.camera)	
 };
-// @namespace
+
+ARjs.Session.prototype.dispose = function () {
+    window.removeEventListener('resize', this.onResize);
+    this.arContext.arController.dispose();
+    this.parameters = null;
+    this.signals = null;
+    this.arSource = false;
+};// @namespace
 var ARjs = ARjs || {}
 
 ARjs.TangoPointCloud = function(arSession){

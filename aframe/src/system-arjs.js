@@ -139,7 +139,6 @@ AFRAME.registerSystem('arjs', {
         this.el.sceneEl.addEventListener('renderstart', function () {
             if (!_this.data.enabled)
                 return false;
-            debugger;
             var scene = _this.el.sceneEl.object3D
             var camera = _this.el.sceneEl.camera
             var renderer = _this.el.sceneEl.renderer

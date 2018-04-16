@@ -6119,7 +6119,6 @@ ARjs.Source.prototype.onResizeElement = function(){
 		this.domElement.style.width = screenWidth+'px'
 		this.domElement.style.marginLeft = '0px'
 	}
-    this.domElement.style.marginLeft!='0px' && console.error('boba', this.domElement.style.marginLeft)
 }
 /*
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
@@ -8646,7 +8645,6 @@ AFRAME.registerSystem('arjs', {
         this.el.sceneEl.addEventListener('renderstart', function () {
             if (!_this.data.enabled)
                 return false;
-            debugger;
             var scene = _this.el.sceneEl.object3D
             var camera = _this.el.sceneEl.camera
             var renderer = _this.el.sceneEl.renderer

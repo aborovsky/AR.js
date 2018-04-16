@@ -6119,7 +6119,6 @@ ARjs.Source.prototype.onResizeElement = function(){
 		this.domElement.style.width = screenWidth+'px'
 		this.domElement.style.marginLeft = '0px'
 	}
-    this.domElement.style.marginLeft!='0px' && console.error('boba', this.domElement.style.marginLeft)
 }
 /*
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){

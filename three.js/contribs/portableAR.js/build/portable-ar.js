@@ -51217,6 +51217,7 @@ ARjs.Session.prototype.onResize = function () {
 ARjs.Session.prototype.dispose = function () {
     window.removeEventListener('resize', this.onResize);
     this.arContext.arController.dispose();
+    this.parameters.renderer.dispose();
     this.parameters = null;
     this.signals = null;
     this.arSource = false;
